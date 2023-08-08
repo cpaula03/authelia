@@ -19,11 +19,9 @@ import (
 
 // NewOAuth2ConsentSession creates a new OAuth2ConsentSession.
 func NewOAuth2ConsentSession(subject uuid.UUID, r fosite.Requester) (consent *OAuth2ConsentSession, err error) {
-	valid := subject.ID() != 0
-
 	consent = &OAuth2ConsentSession{
 		ClientID:          r.GetClient().GetID(),
-		Subject:           uuid.NullUUID{UUID: subject, Valid: valid},
+		Subject:           NullUUID(subject),
 		Form:              r.GetRequestForm().Encode(),
 		RequestedAt:       r.GetRequestedAt(),
 		RequestedScopes:   StringSlicePipeDelimited(r.GetRequestedScopes()),
@@ -249,7 +247,7 @@ type OAuth2BlacklistedJTI struct {
 // OAuth2Session represents a OAuth2.0 session.
 type OAuth2Session struct {
 	ID                int                      `db:"id"`
-	ChallengeID       uuid.UUID                `db:"challenge_id"`
+	ChallengeID       uuid.NullUUID            `db:"challenge_id"`
 	RequestID         string                   `db:"request_id"`
 	ClientID          string                   `db:"client_id"`
 	Signature         string                   `db:"signature"`
@@ -371,7 +369,7 @@ func (par *OAuth2PARContext) ToAuthorizeRequest(ctx context.Context, session fos
 type OpenIDSession struct {
 	*openid.DefaultSession `json:"id_token"`
 
-	ChallengeID uuid.UUID `db:"challenge_id"`
+	ChallengeID uuid.NullUUID `db:"challenge_id"`
 	ClientID    string
 
 	Extra map[string]any `json:"extra"`

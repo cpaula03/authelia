@@ -67,7 +67,7 @@ func NewSessionWithAuthorizeRequest(issuer *url.URL, kid, username string, amr [
 		},
 		Extra:       map[string]any{},
 		ClientID:    requester.GetClient().GetID(),
-		ChallengeID: consent.ChallengeID,
+		ChallengeID: model.NullUUID(consent.ChallengeID),
 	}
 
 	// Ensure required audience value of the client_id exists.

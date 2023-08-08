@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/golang/mock/gomock"
-	"github.com/google/uuid"
 	"github.com/ory/fosite"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -259,7 +258,7 @@ func (s *StoreSuite) TestClientAssertionJWTValid() {
 }
 
 func (s *StoreSuite) TestCreateSessions() {
-	challenge := uuid.Must(uuid.NewRandom())
+	challenge := model.MustNullUUID(model.NewRandomNullUUID())
 	session := &model.OpenIDSession{
 		ChallengeID: challenge,
 	}
@@ -491,7 +490,7 @@ func (s *StoreSuite) TestRevokeSessions() {
 }
 
 func (s *StoreSuite) TestGetSessions() {
-	challenge := uuid.Must(uuid.NewRandom())
+	challenge := model.MustNullUUID(model.NewRandomNullUUID())
 	session := &model.OpenIDSession{
 		ChallengeID: challenge,
 		ClientID:    "hs256",
